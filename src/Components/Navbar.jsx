@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../Context/CartContext';
+import { FaShoppingCart} from "react-icons/fa";
+
 
 const Navbar = () => {
+    const{cart}=useCart();
     return (
         <>
 <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -26,9 +30,17 @@ const Navbar = () => {
         </Link>
       
       </ul>
+          <div className="flex items-center space-x-4 p-4 bg-gray-100">
+      {/* Shopping Cart */}
+      {cart.length}<FaShoppingCart size={28} className="text-blue-600" />
+
+
+
     </div>
   </div>
+   </div>
 </nav>
+
 
             
         </>

@@ -1,20 +1,19 @@
 import React from 'react';
+import { useCart } from '../Context/CartContext';
 
-const CartItem = ({item}) => {
-    return (
-        <>
-            <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+const CartItem = ({ item }) => {
+  const { dispatch } = useCart();
+
+  return (
+    <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
         <img className="p-8 rounded-t-lg" src={item.image} alt={item.title} />
       </a>
       <div className="px-5 pb-5">
         <a href="#">
-         
           <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-1">
             {item.title}
           </h4>
-
-         
           <h5 className="text-sm font-medium tracking-tight text-gray-600 dark:text-gray-400">
             {item.description}
           </h5>
@@ -26,13 +25,35 @@ const CartItem = ({item}) => {
           </span>
         </div>
 
-       
         <div className="flex items-center justify-between">
           <span className="text-3xl font-bold text-gray-900 dark:text-white">
             ${item.price}
           </span>
+
+         
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => dispatch({ type: "DECREASE", payload: item.id })}
+              className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold"
+            >
+              -
+            </button>
+
+            <span className="px-4 py-1 border rounded text-gray-800 bg-white font-semibold">
+              {item.quantity}
+            </span>
+
+            <button
+              onClick={() => dispatch({ type: "INCREASE", payload: item.id })}
+              className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold"
+            >
+              +
+            </button>
+          </div>
+
+         
           <button
-            // onClick={() => AddtoCart(ele)}
+            onClick={() => dispatch({ type: "REMOVE", payload: item.id })}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none 
                        focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center 
                        dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -42,9 +63,7 @@ const CartItem = ({item}) => {
         </div>
       </div>
     </div>
-            
-        </>
-    );
+  );
 };
 
 export default CartItem;

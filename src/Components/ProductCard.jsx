@@ -1,8 +1,13 @@
 import React, { useContext } from "react";
-import { CartContext1 } from "../Context/CartContext";
+import { useCart } from "../Context/CartContext";
 
 const ProductCard = ({ ele }) => {
-  const { AddtoCart } = useContext(CartContext1); 
+  const { cart, dispatch } = useCart();
+
+  const InCart = cart.find((item) => item.id == ele.id);
+
+  const handleADD = () => dispatch({ type: "ADD", payload: ele });
+  const handleREMOVE = () => dispatch({ type: "REMOVE", payload: ele.id });
 
   return (
     <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -11,12 +16,10 @@ const ProductCard = ({ ele }) => {
       </a>
       <div className="px-5 pb-5">
         <a href="#">
-         
           <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-1">
             {ele.title}
           </h4>
 
-         
           <h5 className="text-sm font-medium tracking-tight text-gray-600 dark:text-gray-400">
             {ele.description}
           </h5>
@@ -28,18 +31,19 @@ const ProductCard = ({ ele }) => {
           </span>
         </div>
 
-       
         <div className="flex items-center justify-between">
           <span className="text-3xl font-bold text-gray-900 dark:text-white">
             ${ele.price}
           </span>
           <button
-            onClick={() => AddtoCart(ele)}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none 
-                       focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center 
-                       dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={InCart ? handleREMOVE : handleADD}
+            className={`text-white focus:ring-4 focus:outline-none 
+  font-medium rounded-lg text-sm px-5 py-2.5 text-center  
+  dark:focus:ring-blue-800 ${
+    InCart ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+  }`}
           >
-            Add to cart
+            {InCart ? "Remove from Cart" : "ADD to cart"}
           </button>
         </div>
       </div>
